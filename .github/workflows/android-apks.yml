@@ -38,9 +38,15 @@ jobs:
       - name: Install pinned Android build tools
         run: |
           sdkmanager --install \
-            "platforms;android-37" \
+            "platforms;android-37.0" \
             "ndk;29.0.14206865" \
             "cmake;3.22.1"
+
+          # Android 17 is published as android-37.0, while this AGP build
+          # resolves compileSdk 37 through the legacy android-37 directory.
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
 
       - name: Prepare local build configuration
         env:
