@@ -37,9 +37,9 @@ jobs:
 
       - name: Install pinned Android build tools
         run: |
-          sdkmanager --install \\
-            "platforms;android-37" \\
-            "ndk;29.0.14206865" \\
+          sdkmanager --install \
+            "platforms;android-37" \
+            "ndk;29.0.14206865" \
             "cmake;3.22.1"
 
       - name: Prepare local build configuration
@@ -49,7 +49,7 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
-          printf 'sdk.dir=%s\\n' "$ANDROID_HOME" > local.properties
+          printf 'sdk.dir=%s\n' "$ANDROID_HOME" > local.properties
 
           if [ -n "$RELEASE_KEYSTORE_BASE64" ] && [ -n "$RELEASE_STORE_PASSWORD" ] && [ -n "$RELEASE_KEY_ALIAS" ] && [ -n "$RELEASE_KEY_PASSWORD" ]; then
             echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > release-signing.jks
@@ -66,9 +66,9 @@ jobs:
 
       - name: Run unit tests and build debug/release APKs
         run: |
-          ./gradlew --no-daemon --stacktrace --max-workers=2 \\
-            :app:testDebugUnitTest \\
-            :app:assembleDebug \\
+          ./gradlew --no-daemon --stacktrace --max-workers=2 \
+            :app:testDebugUnitTest \
+            :app:assembleDebug \
             :app:assembleRelease
 
       - name: Stage APKs and build metadata
